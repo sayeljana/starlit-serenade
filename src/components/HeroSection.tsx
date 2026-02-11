@@ -1,7 +1,22 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const HeroSection = () => {
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Effect to play or pause music
+  useEffect(() => {
+    if (audioRef.current) {
+      if (musicPlaying) {
+        audioRef.current.play().catch((error) => {
+          // Autoplay might be blocked by the browser, log error
+          console.error("Audio play failed:", error);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [musicPlaying]);
 
   const scrollDown = () => {
     window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -9,6 +24,12 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 text-center">
+      {/* 
+        Reminder: Add your background music file to the `public/music` folder.
+        For example: `public/music/stargaze.mp3`
+      */}
+      <audio ref={audioRef} src="/music/stargaze.mp3" loop preload="auto" />
+
       {/* Moon glow */}
       <div
         className="absolute top-16 right-1/4 w-32 h-32 md:w-48 md:h-48 rounded-full opacity-20"
@@ -25,8 +46,8 @@ const HeroSection = () => {
       </h1>
 
       <p className="font-body text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-        No matter how many miles separate us, my heart beats only for you,{" "}
-        <span className="text-primary font-semibold">Mou</span>.
+        No matter how many miles separate us, my heart beats only for you,<br/>
+        <span className="text-primary font-semibold">My Love</span>.
       </p>
 
       {/* Heartbeat button */}

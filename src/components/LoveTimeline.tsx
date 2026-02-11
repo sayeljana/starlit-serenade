@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const moments = [
-  { icon: "💬", title: "The Day We Met Online", desc: "Two souls found each other in the vastness of the digital world." },
+  { icon: "💬", title: "The Day We Met at school", desc: "Two souls found each other in the vastness of the world." },
   { icon: "📞", title: "The First Late Night Call", desc: "Hours felt like minutes when your voice was the last thing I heard." },
   { icon: "💭", title: 'The First "I Miss You"', desc: "That's when I knew… you had become my home." },
   { icon: "💕", title: 'The First "I Love You"', desc: "Three words that changed everything forever." },

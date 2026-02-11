@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 
-const TARGET_DATE = new Date("2025-06-15T00:00:00");
+// Calculates the next Valentine's Day date
+const getNextValentinesDay = () => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  let nextValentinesDay = new Date(currentYear, 1, 14); // Note: Month is 0-indexed, so 1 is February
+
+  if (now > nextValentinesDay) {
+    // If Valentine's Day for the current year has passed, use next year's
+    nextValentinesDay = new Date(currentYear + 1, 1, 14);
+  }
+
+  return nextValentinesDay;
+};
+
+const TARGET_DATE = getNextValentinesDay();
 
 const Countdown = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -9,6 +23,7 @@ const Countdown = () => {
     const update = () => {
       const now = new Date();
       const diff = Math.max(0, TARGET_DATE.getTime() - now.getTime());
+
       setTimeLeft({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
@@ -16,7 +31,8 @@ const Countdown = () => {
         seconds: Math.floor((diff / 1000) % 60),
       });
     };
-    update();
+
+    update(); // Run once immediately
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
