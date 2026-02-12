@@ -28,7 +28,7 @@ const HeroSection = () => {
         Reminder: Add your background music file to the `public/music` folder.
         For example: `public/music/stargaze.mp3`
       */}
-      <audio ref={audioRef} src="/starlit-serenade/music/stargaze.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/public/music/stargaze.mp3" loop preload="auto" />
 
       {/* Moon glow */}
       <div
