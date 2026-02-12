@@ -4,12 +4,11 @@ const HeroSection = () => {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Effect to play or pause music
+  // Effect to play or pause music when state changes
   useEffect(() => {
     if (audioRef.current) {
       if (musicPlaying) {
         audioRef.current.play().catch((error) => {
-          // Autoplay might be blocked by the browser, log error
           console.error("Audio play failed:", error);
         });
       } else {
@@ -18,23 +17,34 @@ const HeroSection = () => {
     }
   }, [musicPlaying]);
 
+  // Auto-start music after first user click anywhere
+  useEffect(() => {
+    const startMusic = () => {
+      if (audioRef.current && !musicPlaying) {
+        audioRef.current.play().catch(console.error);
+        setMusicPlaying(true);
+      }
+      window.removeEventListener("click", startMusic);
+    };
+    window.addEventListener("click", startMusic);
+    return () => window.removeEventListener("click", startMusic);
+  }, [musicPlaying]);
+
   const scrollDown = () => {
     window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
   };
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 text-center">
-      {/* 
-        Reminder: Add your background music file to the `public/music` folder.
-        For example: `public/music/stargaze.mp3`
-      */}
+      {/* Correct path: no /public prefix */}
       <audio ref={audioRef} src="/music/stargaze.mp3" loop preload="auto" />
 
       {/* Moon glow */}
       <div
         className="absolute top-16 right-1/4 w-32 h-32 md:w-48 md:h-48 rounded-full opacity-20"
         style={{
-          background: "radial-gradient(circle, hsl(var(--romantic-moon)) 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, hsl(var(--romantic-moon)) 0%, transparent 70%)",
           filter: "blur(20px)",
         }}
       />
@@ -45,14 +55,24 @@ const HeroSection = () => {
         When Someone Means So Much ❤️
       </h1>
 
-      <p className="font-body text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-        No matter how many miles separate us, my heart beats only for you,<br/>
+      <p
+        className="font-body text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 animate-fade-in-up"
+        style={{ animationDelay: "0.3s" }}
+      >
+        No matter how many miles separate us, my heart beats only for you,
+        <br />
         <span className="text-primary font-semibold">My Love</span>.
       </p>
 
       {/* Heartbeat button */}
-      <div className="relative animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
-        <div className="absolute inset-0 rounded-full animate-pulse-glow" style={{ margin: "-8px" }} />
+      <div
+        className="relative animate-fade-in-up"
+        style={{ animationDelay: "0.6s" }}
+      >
+        <div
+          className="absolute inset-0 rounded-full animate-pulse-glow"
+          style={{ margin: "-8px" }}
+        />
         <button
           onClick={scrollDown}
           className="relative glass px-8 py-4 rounded-full text-primary font-body font-semibold text-lg 
